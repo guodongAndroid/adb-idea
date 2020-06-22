@@ -13,10 +13,10 @@ import org.jetbrains.android.util.AndroidUtils
 
 class DeviceResultFetcher constructor(private val project: Project, private val useSameDevicesHelper: UseSameDevicesHelper, private val bridge: Bridge) {
 
-    fun fetch(): DeviceResult? {
+    fun fetch(isShowChooseModule: Boolean): DeviceResult? {
         val facets = AndroidUtils.getApplicationFacets(project)
         if (facets.isNotEmpty()) {
-            val facet = getFacet(facets) ?: return null
+            val facet = getFacet(facets, isShowChooseModule) ?: return null
             val packageName = AndroidModuleModel.get(facet)?.applicationId ?: return null
 
             if (!bridge.isReady()) {
@@ -41,9 +41,9 @@ class DeviceResultFetcher constructor(private val project: Project, private val 
         return null
     }
 
-    private fun getFacet(facets: List<AndroidFacet>): AndroidFacet? {
+    private fun getFacet(facets: List<AndroidFacet>, isShowChooseModule: Boolean): AndroidFacet? {
         val facet: AndroidFacet?
-        if (facets.size > 1) {
+        if (facets.size > 1 && isShowChooseModule) {
             facet = ModuleChooserDialogHelper.showDialogForFacets(project, facets)
             if (facet == null) {
                 return null

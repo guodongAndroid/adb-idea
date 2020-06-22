@@ -22,12 +22,20 @@ class QuickListAction : QuickSwitchSchemeAction(), DumbAware {
         addAction("com.developerphil.adbidea.action.RestartAction", group)
         addAction("com.developerphil.adbidea.action.ClearDataAction", group)
         addAction("com.developerphil.adbidea.action.ClearDataAndRestartAction", group)
-        addAction("com.developerphil.adbidea.action.RevokePermissionsAction", group)
+        /*addAction("com.developerphil.adbidea.action.RevokePermissionsAction", group)
         if (AdbUtil.isDebuggingAvailable) {
             group.addSeparator()
             addAction("com.developerphil.adbidea.action.StartWithDebuggerAction", group)
             addAction("com.developerphil.adbidea.action.RestartWithDebuggerAction", group)
-        }
+        }*/
+        group.addSeparator()
+        addAction("com.developerphil.adbidea.action.OpenLauncher3Action", group)
+        addAction("com.developerphil.adbidea.action.InputKeyEventBackAction", group)
+        addAction("com.developerphil.adbidea.action.InputKeyEventUpAction", group)
+        addAction("com.developerphil.adbidea.action.InputKeyEventDownAction", group)
+        addAction("com.developerphil.adbidea.action.InputKeyEventLeftAction", group)
+        addAction("com.developerphil.adbidea.action.InputKeyEventRightAction", group)
+        addAction("com.developerphil.adbidea.action.InputKeyEventCenterAction", group)
     }
 
 

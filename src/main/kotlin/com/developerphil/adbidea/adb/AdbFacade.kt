@@ -28,8 +28,15 @@ object AdbFacade {
     fun disableWifi(project: Project) = executeOnDevice(project, ToggleSvcCommand(WIFI, false))
     fun enableMobile(project: Project) = executeOnDevice(project, ToggleSvcCommand(MOBILE, true))
     fun disableMobile(project: Project) = executeOnDevice(project, ToggleSvcCommand(MOBILE, false))
+    fun openLauncher3(project: Project) = executeOnDevice(project, OpenLauncher3Command())
+    fun inputKeyEventBack(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.BACK), false)
+    fun inputKeyEventUp(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.UP), false)
+    fun inputKeyEventDown(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.DOWN), false)
+    fun inputKeyEventLeft(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.LEFT), false)
+    fun inputKeyEventRight(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.RIGHT), false)
+    fun inputKeyEventCenter(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.CENTER), false)
 
-    private fun executeOnDevice(project: Project, runnable: Command) {
+    private fun executeOnDevice(project: Project, runnable: Command, isShowChooseModule: Boolean = true) {
         if (AdbUtil.isGradleSyncInProgress(project)) {
             NotificationHelper.error("Gradle sync is in progress")
             return
@@ -37,7 +44,7 @@ object AdbFacade {
 
         val result = project.getComponent(ObjectGraph::class.java)
                 .deviceResultFetcher
-                .fetch()
+                .fetch(isShowChooseModule)
 
         if (result != null) {
             for (device in result.devices) {
