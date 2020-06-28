@@ -21,7 +21,7 @@ class OpenLauncher3Command : Command {
     override fun run(project: Project, device: IDevice, facet: AndroidFacet, packageName: String): Boolean {
         try {
             if (AdbUtil.isAppInstalled(device, LAUNCHER3_PACKAGE_NAME)) {
-                val receiver = StartDefaultActivityCommand.StartActivityReceiver()
+                val receiver = StartActivityReceiver()
                 device.executeShellCommand("am start -n $LAUNCHER3_PACKAGE_NAME/$LAUNCHER3_ACTIVITY_NAME", receiver, 15L, TimeUnit.SECONDS)
                 if (receiver.isSuccess) {
                     NotificationHelper.info(String.format("<b>%s</b> started on %s", LAUNCHER3_PACKAGE_NAME, device.name))

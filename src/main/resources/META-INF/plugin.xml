@@ -246,6 +246,12 @@
 
             <separator/>
 
+            <action id="com.developerphil.adbidea.action.RebootAction"
+                    class="com.developerphil.adbidea.action.RebootAction"
+                    text="ADB Reboot Device"
+                    description="Device reboot">
+            </action>
+
             <action id="com.developerphil.adbidea.action.OpenLauncher3Action"
                     class="com.developerphil.adbidea.action.OpenLauncher3Action"
                     text="ADB OpenLauncher3"
@@ -286,6 +292,18 @@
                     class="com.developerphil.adbidea.action.InputKeyEventCenterAction"
                     text="ADB Input KeyEvent Center"
                     description="Input keyEvent center">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.ShowSystemBarAction"
+                    class="com.developerphil.adbidea.action.ShowSystemBarAction"
+                    text="ADB Show System Bar"
+                    description="Show System bar">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.HideSystemBarAction"
+                    class="com.developerphil.adbidea.action.HideSystemBarAction"
+                    text="ADB Hide System Bar"
+                    description="Hide System bar">
             </action>
 
         </group>

@@ -29,6 +29,7 @@ class QuickListAction : QuickSwitchSchemeAction(), DumbAware {
             addAction("com.developerphil.adbidea.action.RestartWithDebuggerAction", group)
         }*/
         group.addSeparator()
+        addAction("com.developerphil.adbidea.action.RebootAction", group)
         addAction("com.developerphil.adbidea.action.OpenLauncher3Action", group)
         addAction("com.developerphil.adbidea.action.InputKeyEventBackAction", group)
         addAction("com.developerphil.adbidea.action.InputKeyEventUpAction", group)
@@ -36,6 +37,8 @@ class QuickListAction : QuickSwitchSchemeAction(), DumbAware {
         addAction("com.developerphil.adbidea.action.InputKeyEventLeftAction", group)
         addAction("com.developerphil.adbidea.action.InputKeyEventRightAction", group)
         addAction("com.developerphil.adbidea.action.InputKeyEventCenterAction", group)
+        addAction("com.developerphil.adbidea.action.ShowSystemBarAction", group)
+        addAction("com.developerphil.adbidea.action.HideSystemBarAction", group)
     }
 
 

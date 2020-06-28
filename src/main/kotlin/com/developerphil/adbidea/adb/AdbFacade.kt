@@ -28,13 +28,16 @@ object AdbFacade {
     fun disableWifi(project: Project) = executeOnDevice(project, ToggleSvcCommand(WIFI, false))
     fun enableMobile(project: Project) = executeOnDevice(project, ToggleSvcCommand(MOBILE, true))
     fun disableMobile(project: Project) = executeOnDevice(project, ToggleSvcCommand(MOBILE, false))
-    fun openLauncher3(project: Project) = executeOnDevice(project, OpenLauncher3Command())
+    fun reboot(project: Project) = executeOnDevice(project, RebootCommand(), false)
+    fun openLauncher3(project: Project) = executeOnDevice(project, OpenLauncher3Command(), false)
     fun inputKeyEventBack(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.BACK), false)
     fun inputKeyEventUp(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.UP), false)
     fun inputKeyEventDown(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.DOWN), false)
     fun inputKeyEventLeft(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.LEFT), false)
     fun inputKeyEventRight(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.RIGHT), false)
     fun inputKeyEventCenter(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.CENTER), false)
+    fun showSystemBar(project: Project) = executeOnDevice(project, SystemBarCommand(true), false)
+    fun hideSystemBar(project: Project) = executeOnDevice(project, SystemBarCommand(false), false)
 
     private fun executeOnDevice(project: Project, runnable: Command, isShowChooseModule: Boolean = true) {
         if (AdbUtil.isGradleSyncInProgress(project)) {
