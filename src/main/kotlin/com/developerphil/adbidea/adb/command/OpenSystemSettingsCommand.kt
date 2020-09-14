@@ -11,26 +11,26 @@ import org.jetbrains.android.facet.AndroidFacet
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class OpenLauncher3Command : Command {
+class OpenSystemSettingsCommand : Command {
 
     companion object {
-        private const val LAUNCHER3_PACKAGE_NAME = "com.android.launcher3"
-        private const val LAUNCHER3_ACTIVITY_NAME = "com.android.launcher3.Launcher"
+        private const val SYSTEM_SETTINGS_PACKAGE_NAME = "com.android.settings"
+        private const val SYSTEM_SETTINGS_ACTIVITY_NAME = "com.android.settings.Settings"
     }
 
     override fun run(project: Project, device: IDevice, facet: AndroidFacet, packageName: String): Boolean {
         try {
-            if (AdbUtil.isAppInstalled(device, LAUNCHER3_PACKAGE_NAME)) {
+            if (AdbUtil.isAppInstalled(device, SYSTEM_SETTINGS_PACKAGE_NAME)) {
                 val receiver = StartActivityReceiver()
-                device.executeShellCommand("am start -n $LAUNCHER3_PACKAGE_NAME/$LAUNCHER3_ACTIVITY_NAME", receiver, 15L, TimeUnit.SECONDS)
+                device.executeShellCommand("am start -n $SYSTEM_SETTINGS_PACKAGE_NAME/$SYSTEM_SETTINGS_ACTIVITY_NAME", receiver, 15L, TimeUnit.SECONDS)
                 if (receiver.isSuccess) {
-                    NotificationHelper.info(String.format("<b>%s</b> started on %s", LAUNCHER3_PACKAGE_NAME, device.name))
+                    NotificationHelper.info(String.format("<b>%s</b> started on %s", SYSTEM_SETTINGS_PACKAGE_NAME, device.name))
                     return true
                 } else {
-                    NotificationHelper.error(String.format("<b>%s</b> could not be started on %s. \n\n<b>ADB Output:</b> \n%s", LAUNCHER3_PACKAGE_NAME, device.name, receiver.message))
+                    NotificationHelper.error(String.format("<b>%s</b> could not be started on %s. \n\n<b>ADB Output:</b> \n%s", SYSTEM_SETTINGS_PACKAGE_NAME, device.name, receiver.message))
                 }
             } else {
-                NotificationHelper.error(String.format("<b>%s</b> is not installed on %s", LAUNCHER3_PACKAGE_NAME, device.name))
+                NotificationHelper.error(String.format("<b>%s</b> is not installed on %s", SYSTEM_SETTINGS_PACKAGE_NAME, device.name))
             }
         } catch (e1: Exception) {
             NotificationHelper.error("Start app failed... " + e1.message)

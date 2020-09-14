@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/pbreault/adb-idea">
     <id>com.developerphil.adbidea</id>
     <name>ADB Idea</name>
-    <version>1.6.1.1</version>
+    <version>1.6.2.1</version>
     <vendor url="http://www.developerphil.com">Philippe Breault</vendor>
 
     <description><![CDATA[
@@ -263,6 +263,12 @@
                     class="com.developerphil.adbidea.action.OpenLauncher3Action"
                     text="ADB OpenLauncher3"
                     description="Open launcher3">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.OpenSystemSettingsAction"
+                    class="com.developerphil.adbidea.action.OpenSystemSettingsAction"
+                    text="ADB OpenSystemSettings"
+                    description="Open systemSettings">
             </action>
 
             <action id="com.developerphil.adbidea.action.InputKeyEventBackAction"

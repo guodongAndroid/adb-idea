@@ -30,6 +30,7 @@ object AdbFacade {
     fun disableMobile(project: Project) = executeOnDevice(project, ToggleSvcCommand(MOBILE, false))
     fun reboot(project: Project) = executeOnDevice(project, RebootCommand(), false)
     fun openLauncher3(project: Project) = executeOnDevice(project, OpenLauncher3Command(), false)
+    fun openSystemSettings(project: Project) = executeOnDevice(project, OpenSystemSettingsCommand(), false)
     fun inputKeyEventBack(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.BACK), false)
     fun inputKeyEventUp(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.UP), false)
     fun inputKeyEventDown(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.DOWN), false)

@@ -31,6 +31,7 @@ class QuickListAction : QuickSwitchSchemeAction(), DumbAware {
         group.addSeparator()
         addAction("com.developerphil.adbidea.action.RebootAction", group)
         addAction("com.developerphil.adbidea.action.OpenLauncher3Action", group)
+        addAction("com.developerphil.adbidea.action.OpenSystemSettingsAction", group)
         addAction("com.developerphil.adbidea.action.InputKeyEventBackAction", group)
         addAction("com.developerphil.adbidea.action.InputKeyEventUpAction", group)
         addAction("com.developerphil.adbidea.action.InputKeyEventDownAction", group)
