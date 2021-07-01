@@ -5,6 +5,9 @@ buildscript {
     repositories {
         mavenCentral()
         jcenter()
+        maven {
+            url 'https://www.jetbrains.com/intellij-repository/releases'
+        }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -27,6 +30,9 @@ apply plugin: 'kotlin'
 repositories {
     mavenCentral()
     jcenter()
+    maven {
+        url 'https://www.jetbrains.com/intellij-repository/releases'
+    }
 }
 
 sourceSets {
@@ -47,7 +53,8 @@ intellij {
     pluginName 'adb_idea'
     updateSinceUntilBuild false
 
-    intellij.localPath = project.hasProperty("StudioRunPath") ? StudioRunPath : StudioCompilePath
+    version '203.8084.24'
+//    intellij.localPath = project.hasProperty("StudioRunPath") ? StudioRunPath : StudioCompilePath
 }
 
 group 'com.developerphil.intellij.plugin.adbidea'

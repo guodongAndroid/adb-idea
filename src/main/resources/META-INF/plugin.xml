@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/pbreault/adb-idea">
     <id>com.developerphil.adbidea</id>
     <name>ADB Idea</name>
-    <version>1.6.2.1</version>
+    <version>1.6.2.2</version>
     <vendor url="http://www.developerphil.com">Philippe Breault</vendor>
 
     <description><![CDATA[
@@ -140,9 +140,9 @@
         ]]>
     </change-notes>
 
-    <!-- Android Studio 4.0+ -->
+    <!-- Android Studio Arctic Fox | 2020.3.1 Beta 4 -->
     <!-- see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
-    <idea-version since-build="193"/>
+    <idea-version since-build="203"/>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.android</depends>
