@@ -14,7 +14,7 @@ repositories {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = "1.6.2.4"
+version = "1.6.2.5"
 
 sourceSets {
     main {
@@ -34,8 +34,16 @@ intellij {
     pluginName 'adb_idea'
     updateSinceUntilBuild false
 
-    version '203.8084.24'
-//    intellij.localPath = project.hasProperty("StudioRunPath") ? StudioRunPath : StudioCompilePath
+//    version '203.8084.24'
+    localPath = project.hasProperty("StudioRunPath") ? StudioRunPath : StudioCompilePath
+
+    instrumentCode {
+        compilerVersion = "203.7717.56"
+    }
+
+    instrumentTestCode {
+        compilerVersion = "203.7717.56"
+    }
 }
 
 group 'com.developerphil.intellij.plugin.adbidea'
