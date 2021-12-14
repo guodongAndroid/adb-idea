@@ -14,7 +14,7 @@ repositories {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = "1.6.2.3"
+version = "1.6.2.4"
 
 sourceSets {
     main {
