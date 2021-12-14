@@ -269,7 +269,7 @@ class MyDeviceChooser(multipleSelection: Boolean,
             val device = myDevices[rowIndex]
             when (columnIndex) {
                 DEVICE_NAME_COLUMN_INDEX -> return generateDeviceName(device)
-                SERIAL_COLUMN_INDEX -> return device.serialNumber
+                SERIAL_COLUMN_INDEX -> return generateSerialNumber(device)
                 DEVICE_STATE_COLUMN_INDEX -> return getDeviceState(device)
                 COMPATIBILITY_COLUMN_INDEX -> return LaunchCompatibilityCheckerImpl.create(myFacet, null, null)?.validate(ConnectedAndroidDevice(device, null))
             }
@@ -281,6 +281,20 @@ class MyDeviceChooser(multipleSelection: Boolean,
                     .replace(device.serialNumber, "")
                     .replace("[-_]".toRegex(), " ")
                     .replace("[\\[\\]]".toRegex(), "")
+        }
+
+        private fun generateSerialNumber(device: IDevice): String {
+            return buildString {
+                append(device.serialNumber)
+                append(" ")
+                append("Android")
+                append(" ")
+                append(device.getProperty(IDevice.PROP_BUILD_VERSION))
+                append(" ")
+                append("(API ")
+                append(device.getProperty(IDevice.PROP_BUILD_API_LEVEL))
+                append(")")
+            }
         }
 
         override fun getColumnClass(columnIndex: Int): Class<*> {
@@ -374,8 +388,8 @@ class MyDeviceChooser(multipleSelection: Boolean,
                 }
             }
         })
-        setColumnWidth(myDeviceTable, DEVICE_NAME_COLUMN_INDEX, "Samsung Galaxy Nexus Android 4.1 (API 17)")
-        setColumnWidth(myDeviceTable, SERIAL_COLUMN_INDEX, "0000-0000-00000")
+        setColumnWidth(myDeviceTable, DEVICE_NAME_COLUMN_INDEX, "Samsung Galaxy Nexus")
+        setColumnWidth(myDeviceTable, SERIAL_COLUMN_INDEX, "0000-0000-00000 Android 7.1.2 (API 25)")
         setColumnWidth(myDeviceTable, DEVICE_STATE_COLUMN_INDEX, "offline")
         setColumnWidth(myDeviceTable, COMPATIBILITY_COLUMN_INDEX, "yes")
         // Do not recreate columns on every model update - this should help maintain the column sizes set above
