@@ -269,7 +269,7 @@ class MyDeviceChooser(multipleSelection: Boolean,
             val device = myDevices[rowIndex]
             when (columnIndex) {
                 DEVICE_NAME_COLUMN_INDEX -> return generateDeviceName(device)
-                SERIAL_COLUMN_INDEX -> return generateSerialNumber(device)
+                SERIAL_COLUMN_INDEX -> return device.serialNumber
                 DEVICE_STATE_COLUMN_INDEX -> return getDeviceState(device)
                 COMPATIBILITY_COLUMN_INDEX -> return LaunchCompatibilityCheckerImpl.create(myFacet, null, null)?.validate(ConnectedAndroidDevice(device, null))
             }
@@ -277,15 +277,11 @@ class MyDeviceChooser(multipleSelection: Boolean,
         }
 
         private fun generateDeviceName(device: IDevice): String {
-            return device.name
+            return buildString {
+                append(device.name
                     .replace(device.serialNumber, "")
                     .replace("[-_]".toRegex(), " ")
-                    .replace("[\\[\\]]".toRegex(), "")
-        }
-
-        private fun generateSerialNumber(device: IDevice): String {
-            return buildString {
-                append(device.serialNumber)
+                    .replace("[\\[\\]]".toRegex(), ""))
                 append(" ")
                 append("Android")
                 append(" ")
@@ -314,17 +310,16 @@ class MyDeviceChooser(multipleSelection: Boolean,
             if (value !is LaunchCompatibility) {
                 return
             }
-            val compatibility = value
-            val state = compatibility.state
-            if (state == LaunchCompatibility.State.OK) {
+            val compatibility = value.state
+            if (compatibility == LaunchCompatibility.State.OK) {
                 append("Yes")
             } else {
-                if (state == LaunchCompatibility.State.ERROR) {
+                if (compatibility == LaunchCompatibility.State.ERROR) {
                     append("No", SimpleTextAttributes.ERROR_ATTRIBUTES)
                 } else {
                     append("Maybe")
                 }
-                val reason = compatibility.reason
+                val reason = value.reason
                 if (reason != null) {
                     append(", ")
                     append(reason)
@@ -388,8 +383,8 @@ class MyDeviceChooser(multipleSelection: Boolean,
                 }
             }
         })
-        setColumnWidth(myDeviceTable, DEVICE_NAME_COLUMN_INDEX, "Samsung Galaxy Nexus")
-        setColumnWidth(myDeviceTable, SERIAL_COLUMN_INDEX, "0000-0000-00000 Android 7.1.2 (API 25)")
+        setColumnWidth(myDeviceTable, DEVICE_NAME_COLUMN_INDEX, "Samsung Galaxy Nexus Android 7.1.2 (API 25)")
+        setColumnWidth(myDeviceTable, SERIAL_COLUMN_INDEX, "0000-0000-00000")
         setColumnWidth(myDeviceTable, DEVICE_STATE_COLUMN_INDEX, "offline")
         setColumnWidth(myDeviceTable, COMPATIBILITY_COLUMN_INDEX, "yes")
         // Do not recreate columns on every model update - this should help maintain the column sizes set above
