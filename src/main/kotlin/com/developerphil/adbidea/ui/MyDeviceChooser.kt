@@ -21,6 +21,7 @@ import com.android.ddmlib.IDevice.HardwareFeature
 import com.android.tools.idea.run.ConnectedAndroidDevice
 import com.android.tools.idea.run.LaunchCompatibility
 import com.android.tools.idea.run.LaunchCompatibilityCheckerImpl
+import com.developerphil.adbidea.compatibility.BackwardCompatibleGetter
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
@@ -37,6 +38,7 @@ import gnu.trove.TIntArrayList
 import org.jetbrains.android.dom.manifest.UsesFeature
 import org.jetbrains.android.facet.AndroidFacet
 import org.jetbrains.android.sdk.AndroidSdkUtils
+import org.joor.Reflect
 import java.awt.Dimension
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
@@ -271,7 +273,8 @@ class MyDeviceChooser(multipleSelection: Boolean,
                 DEVICE_NAME_COLUMN_INDEX -> return generateDeviceName(device)
                 SERIAL_COLUMN_INDEX -> return device.serialNumber
                 DEVICE_STATE_COLUMN_INDEX -> return getDeviceState(device)
-                COMPATIBILITY_COLUMN_INDEX -> return LaunchCompatibilityCheckerImpl.create(myFacet, null, null)?.validate(ConnectedAndroidDevice(device, null))
+                COMPATIBILITY_COLUMN_INDEX -> return LaunchCompatibilityCheckerImpl.create(myFacet, null, null)!!
+                    .validate(ConnectedAndroidDeviceBuilder(device).get())
             }
             return null
         }
@@ -394,4 +397,15 @@ class MyDeviceChooser(multipleSelection: Boolean,
         myRefreshingAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
         myBridge = AndroidSdkUtils.getDebugBridge(myFacet.module.project)
     }
+}
+
+// To remove when IntelliJ merges Android Plugin 7.1
+class ConnectedAndroidDeviceBuilder(
+    private val device: IDevice,
+) : BackwardCompatibleGetter<ConnectedAndroidDevice>() {
+    override fun getCurrentImplementation() = ConnectedAndroidDevice(device)
+
+    // On agp 7.0, there is a second nullable parameter in the constructor
+    override fun getPreviousImplementation(): ConnectedAndroidDevice =
+        Reflect.onClass(ConnectedAndroidDevice::class.java).create(device, null).get()
 }
