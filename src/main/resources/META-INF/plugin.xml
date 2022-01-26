@@ -1,8 +1,8 @@
 <idea-plugin url="https://github.com/pbreault/adb-idea">
     <id>com.developerphil.adbidea</id>
     <name>ADB Idea</name>
-    <version>1.6.2.4</version>
-    <vendor url="http://www.developerphil.com">Philippe Breault</vendor>
+    <version>1.6.4.1</version>
+    <vendor url="http://www.developerphil.com">Philippe Breault &amp; guodongAndroid</vendor>
 
     <description><![CDATA[
         Adds the following ADB commands to Android Studio and Intellij:<br />
