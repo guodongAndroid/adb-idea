@@ -16,13 +16,21 @@ class OpenLauncher3Command : Command {
     companion object {
         private const val LAUNCHER3_PACKAGE_NAME = "com.android.launcher3"
         private const val LAUNCHER3_ACTIVITY_NAME = "com.android.launcher3.Launcher"
+        private const val LAUNCHER3_ACTIVITY_NAME_R = "com.android.launcher3.uioverrides.QuickstepLauncher"
     }
 
     override fun run(project: Project, device: IDevice, facet: AndroidFacet, packageName: String): Boolean {
         try {
             if (AdbUtil.isAppInstalled(device, LAUNCHER3_PACKAGE_NAME)) {
                 val receiver = StartActivityReceiver()
-                device.executeShellCommand("am start -n $LAUNCHER3_PACKAGE_NAME/$LAUNCHER3_ACTIVITY_NAME", receiver, 15L, TimeUnit.SECONDS)
+                val apiLevel = device.version.apiLevel
+                val activityName = if (apiLevel == 30) {
+                    // A30/A35 Android R API 30
+                    LAUNCHER3_ACTIVITY_NAME_R
+                } else {
+                    LAUNCHER3_ACTIVITY_NAME
+                }
+                device.executeShellCommand("am start -n $LAUNCHER3_PACKAGE_NAME/$activityName", receiver, 15L, TimeUnit.SECONDS)
                 if (receiver.isSuccess) {
                     NotificationHelper.info(String.format("<b>%s</b> started on %s", LAUNCHER3_PACKAGE_NAME, device.name))
                     return true
