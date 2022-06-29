@@ -18,10 +18,14 @@ package com.developerphil.adbidea.ui
 import com.android.ddmlib.AndroidDebugBridge
 import com.android.ddmlib.IDevice
 import com.android.ddmlib.IDevice.HardwareFeature
+import com.android.sdklib.AndroidVersion
+import com.android.sdklib.IAndroidTarget
+import com.android.tools.idea.gradle.project.model.AndroidModuleModel
+import com.android.tools.idea.model.AndroidModuleInfo
+import com.android.tools.idea.run.AndroidDevice
 import com.android.tools.idea.run.ConnectedAndroidDevice
 import com.android.tools.idea.run.LaunchCompatibility
-import com.android.tools.idea.run.LaunchCompatibilityCheckerImpl
-import com.developerphil.adbidea.compatibility.BackwardCompatibleGetter
+import com.google.common.util.concurrent.ListenableFuture
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
@@ -37,13 +41,14 @@ import com.intellij.util.containers.ContainerUtil
 import gnu.trove.TIntArrayList
 import org.jetbrains.android.dom.manifest.UsesFeature
 import org.jetbrains.android.facet.AndroidFacet
+import org.jetbrains.android.sdk.AndroidPlatform
 import org.jetbrains.android.sdk.AndroidSdkUtils
-import org.joor.Reflect
 import java.awt.Dimension
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
 import java.util.*
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.atomic.AtomicReference
 import javax.swing.Action
 import javax.swing.JComponent
@@ -56,17 +61,30 @@ import javax.swing.table.AbstractTableModel
  *
  * https://android.googlesource.com/platform/tools/adt/idea/+/refs/heads/mirror-goog-studio-master-dev/android/src/com/android/tools/idea/run/DeviceChooser.java
  */
-class MyDeviceChooser(multipleSelection: Boolean,
-                      okAction: Action,
-                      private val myFacet: AndroidFacet,
-                      private val myFilter: Condition<IDevice>?) : Disposable {
+class MyDeviceChooser(
+    multipleSelection: Boolean,
+    okAction: Action,
+    private val myFacet: AndroidFacet,
+    private val myFilter: Condition<IDevice>?
+) : Disposable {
     private val myListeners = ContainerUtil.createLockFreeCopyOnWriteList<DeviceChooserListener>()
     private val myRefreshingAlarm: Alarm
     private val myBridge: AndroidDebugBridge?
+    private val myMinSdkVersion: ListenableFuture<AndroidVersion> =
+        AndroidModuleInfo.getInstance(myFacet).runtimeMinSdkVersion
+
+    private val myProjectTarget: IAndroidTarget =
+        AndroidPlatform.getInstance(myFacet.module)?.target ?: error("Module [${myFacet.module.name}] already disposed")
+
+    private val androidModuleModel = AndroidModuleModel.get(myFacet)
+    private val mySupportedAbis = androidModuleModel?.supportedAbis ?: Collections.emptySet()
+
     @Volatile
     private var myProcessSelectionFlag = true
+
     /** The current list of devices that is displayed in the table.  */
     private var myDisplayedDevices = EMPTY_DEVICE_ARRAY
+
     /**
      * The current list of devices obtained from the debug bridge. This is updated in a background thread.
      * If it is different than [.myDisplayedDevices], then a [.refreshTable] invocation in the EDT thread
@@ -161,7 +179,8 @@ class MyDeviceChooser(multipleSelection: Boolean,
         }
         if (!Arrays.equals(myDisplayedDevices, devices)) {
             myDetectedDevicesRef.set(devices)
-            ApplicationManager.getApplication().invokeLater({ refreshTable() }, ModalityState.stateForComponent(myDeviceTable))
+            ApplicationManager.getApplication()
+                .invokeLater({ refreshTable() }, ModalityState.stateForComponent(myDeviceTable))
         }
     }
 
@@ -273,18 +292,34 @@ class MyDeviceChooser(multipleSelection: Boolean,
                 DEVICE_NAME_COLUMN_INDEX -> return generateDeviceName(device)
                 SERIAL_COLUMN_INDEX -> return device.serialNumber
                 DEVICE_STATE_COLUMN_INDEX -> return getDeviceState(device)
-                COMPATIBILITY_COLUMN_INDEX -> return LaunchCompatibilityCheckerImpl.create(myFacet, null, null)!!
-                    .validate(ConnectedAndroidDeviceBuilder(device).get())
+                COMPATIBILITY_COLUMN_INDEX -> {
+                    val connectedDevice: AndroidDevice = ConnectedAndroidDevice(device)
+                    return try {
+                        if (myMinSdkVersion.isDone) connectedDevice.canRun(
+                            myMinSdkVersion.get(),
+                            myProjectTarget,
+                            myFacet,
+                            { EnumSet.noneOf(HardwareFeature::class.java) },
+                            mySupportedAbis
+                        ) else false
+                    } catch (e: InterruptedException) {
+                        false
+                    } catch (e: ExecutionException) {
+                        false
+                    }
+                }
             }
             return null
         }
 
         private fun generateDeviceName(device: IDevice): String {
             return buildString {
-                append(device.name
-                    .replace(device.serialNumber, "")
-                    .replace("[-_]".toRegex(), " ")
-                    .replace("[\\[\\]]".toRegex(), ""))
+                append(
+                    device.name
+                        .replace(device.serialNumber, "")
+                        .replace("[-_]".toRegex(), " ")
+                        .replace("[\\[\\]]".toRegex(), "")
+                )
                 append(" ")
                 append("Android")
                 append(" ")
@@ -309,7 +344,14 @@ class MyDeviceChooser(multipleSelection: Boolean,
     }
 
     private class LaunchCompatibilityRenderer : ColoredTableCellRenderer() {
-        override fun customizeCellRenderer(table: JTable, value: Any?, selected: Boolean, hasFocus: Boolean, row: Int, column: Int) {
+        override fun customizeCellRenderer(
+            table: JTable,
+            value: Any?,
+            selected: Boolean,
+            hasFocus: Boolean,
+            row: Int,
+            column: Int
+        ) {
             if (value !is LaunchCompatibility) {
                 return
             }
@@ -397,15 +439,4 @@ class MyDeviceChooser(multipleSelection: Boolean,
         myRefreshingAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
         myBridge = AndroidSdkUtils.getDebugBridge(myFacet.module.project)
     }
-}
-
-// To remove when IntelliJ merges Android Plugin 7.1
-class ConnectedAndroidDeviceBuilder(
-    private val device: IDevice,
-) : BackwardCompatibleGetter<ConnectedAndroidDevice>() {
-    override fun getCurrentImplementation() = ConnectedAndroidDevice(device)
-
-    // On agp 7.0, there is a second nullable parameter in the constructor
-    override fun getPreviousImplementation(): ConnectedAndroidDevice =
-        Reflect.onClass(ConnectedAndroidDevice::class.java).create(device, null).get()
 }
