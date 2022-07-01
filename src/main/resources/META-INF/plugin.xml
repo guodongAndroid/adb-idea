@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/pbreault/adb-idea">
     <id>com.developerphil.adbidea</id>
     <name>ADB Idea</name>
-    <version>1.6.4.2</version>
+    <version>1.6.6.2</version>
     <vendor url="http://www.developerphil.com">Philippe Breault &amp; guodongAndroid</vendor>
 
     <description><![CDATA[
@@ -29,6 +29,10 @@
 
 
     <change-notes><![CDATA[
+        <b>1.6.6.2</b>
+        <ul>
+            <li>FEATURE: Add show mvp debugview action</li>
+        </ul>
         <b>1.6.6</b>
         <ul>
             <li>BUGFIX: Compatibility with Android Studio 2022.1.1</li>
