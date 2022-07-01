@@ -331,6 +331,12 @@
                     description="Hide System bar">
             </action>
 
+            <action id="com.developerphil.adbidea.action.ShowMVPDebugViewAction"
+                    class="com.developerphil.adbidea.action.ShowMVPDebugViewAction"
+                    text="ADB Show MVP DebugView"
+                    description="Show MVP DebugView">
+            </action>
+
         </group>
     </actions>
 

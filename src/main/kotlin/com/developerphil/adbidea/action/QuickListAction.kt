@@ -40,6 +40,8 @@ class QuickListAction : QuickSwitchSchemeAction(), DumbAware {
         addAction("com.developerphil.adbidea.action.InputKeyEventCenterAction", group)
         addAction("com.developerphil.adbidea.action.ShowSystemBarAction", group)
         addAction("com.developerphil.adbidea.action.HideSystemBarAction", group)
+        group.addSeparator()
+        addAction("com.developerphil.adbidea.action.ShowMVPDebugViewAction", group)
     }
 
 

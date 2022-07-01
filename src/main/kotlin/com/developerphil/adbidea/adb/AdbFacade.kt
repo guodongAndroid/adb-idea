@@ -44,6 +44,7 @@ object AdbFacade {
     fun inputKeyEventCenter(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.CENTER), false)
     fun showSystemBar(project: Project) = executeOnDevice(project, SystemBarCommand(true), false)
     fun hideSystemBar(project: Project) = executeOnDevice(project, SystemBarCommand(false), false)
+    fun showMVPDebugView(project: Project) = executeOnDevice(project, MVPMonitorCommand(MVPMonitorCommand.CMD_DEBUG_VIEW))
 
     private fun executeOnDevice(project: Project, runnable: Command, isShowChooseModule: Boolean = true) {
         if (AdbUtil.isGradleSyncInProgress(project)) {
