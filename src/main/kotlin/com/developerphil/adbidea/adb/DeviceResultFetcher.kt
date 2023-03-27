@@ -20,15 +20,15 @@ class DeviceResultFetcher constructor(
     private val bridge: Bridge
 ) {
 
-    fun fetch(isShowChooseModule: Boolean): DeviceResult? {
+    fun fetch(isShowChooseModule: Boolean): DeviceResult {
         val facets = AndroidUtils.getApplicationFacets(project)
         if (facets.isNotEmpty()) {
-            val facet = getFacet(facets, isShowChooseModule) ?: return null
-            val packageName = AndroidModuleModel.get(facet)?.applicationId ?: return null
+            val facet = getFacet(facets, isShowChooseModule) ?: return DeviceNotFound
+            val packageName = AndroidModuleModel.get(facet)?.applicationId ?: return DeviceNotFound
 
             if (!bridge.isReady()) {
                 NotificationHelper.error("No platform configured")
-                return null
+                return DeviceNotFound
             }
 
             val rememberedDevices = useSameDevicesHelper.getRememberedDevices()
@@ -45,7 +45,7 @@ class DeviceResultFetcher constructor(
                 DeviceNotFound
             }
         }
-        return null
+        return DeviceNotFound
     }
 
     private fun getFacet(_facets: List<AndroidFacet>, isShowChooseModule: Boolean): AndroidFacet? {

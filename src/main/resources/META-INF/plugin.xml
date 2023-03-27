@@ -335,10 +335,28 @@
                     description="Hide System bar">
             </action>
 
-            <action id="com.developerphil.adbidea.action.ShowMVPDebugViewAction"
-                    class="com.developerphil.adbidea.action.ShowMVPDebugViewAction"
-                    text="ADB Show MVP DebugView"
+            <action id="com.developerphil.adbidea.action.MVPShowDebugViewAction"
+                    class="com.developerphil.adbidea.action.MVPShowDebugViewAction"
+                    text="ADB MVP DebugView"
                     description="Show MVP DebugView">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.MVPDumpAction"
+                    class="com.developerphil.adbidea.action.MVPDumpAction"
+                    text="ADB MVP Dump"
+                    description="MVP dump">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.MVPDumpTracesAction"
+                    class="com.developerphil.adbidea.action.MVPDumpTracesAction"
+                    text="ADB MVP DumpTraces"
+                    description="MVP dumpTraces">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.MVPShowVPStatsViewAction"
+                    class="com.developerphil.adbidea.action.MVPShowVPStatsViewAction"
+                    text="ADB MVP VPStatsView"
+                    description="Show MVP VPStatsView">
             </action>
 
         </group>

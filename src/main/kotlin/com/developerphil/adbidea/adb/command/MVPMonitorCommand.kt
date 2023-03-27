@@ -13,6 +13,7 @@ class MVPMonitorCommand(private val cmd: Int) : Command {
         const val CMD_DEBUG_VIEW = 1
         const val CMD_DUMP = 2
         const val CMD_DUMP_TRACES = 3
+        const val CMD_VP_STATS_VIEW = 4
     }
 
     override fun run(project: Project, device: IDevice, facet: AndroidFacet, packageName: String): Boolean {

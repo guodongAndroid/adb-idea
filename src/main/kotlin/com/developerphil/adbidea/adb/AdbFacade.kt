@@ -45,6 +45,9 @@ object AdbFacade {
     fun showSystemBar(project: Project) = executeOnDevice(project, SystemBarCommand(true), false)
     fun hideSystemBar(project: Project) = executeOnDevice(project, SystemBarCommand(false), false)
     fun showMVPDebugView(project: Project) = executeOnDevice(project, MVPMonitorCommand(MVPMonitorCommand.CMD_DEBUG_VIEW))
+    fun mvpDump(project: Project) = executeOnDevice(project, MVPMonitorCommand(MVPMonitorCommand.CMD_DUMP))
+    fun mvpDumpTraces(project: Project) = executeOnDevice(project, MVPMonitorCommand(MVPMonitorCommand.CMD_DUMP_TRACES))
+    fun showMVPVPStatsView(project: Project) = executeOnDevice(project, MVPMonitorCommand(MVPMonitorCommand.CMD_VP_STATS_VIEW))
 
     private fun executeOnDevice(project: Project, runnable: Command, isShowChooseModule: Boolean = true) {
         if (AdbUtil.isGradleSyncInProgress(project)) {
