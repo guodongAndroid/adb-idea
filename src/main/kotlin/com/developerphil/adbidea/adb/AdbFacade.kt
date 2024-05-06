@@ -34,6 +34,17 @@ object AdbFacade {
     fun enableMobile(project: Project) = executeOnDevice(project, ToggleSvcCommand(MOBILE, true))
     fun disableMobile(project: Project) = executeOnDevice(project, ToggleSvcCommand(MOBILE, false))
 
+    fun reboot(project: Project) = executeOnDevice(project, RebootCommand())
+    fun openLauncher3(project: Project) = executeOnDevice(project, OpenLauncher3Command())
+    fun openSystemSettings(project: Project) = executeOnDevice(project, OpenSystemSettingsCommand())
+    fun openApplicationDevelopmentSettings(project: Project) = executeOnDevice(project, OpenApplicationDevelopmentSettingsCommand())
+    fun inputKeyEventBack(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.BACK))
+    fun inputKeyEventUp(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.UP))
+    fun inputKeyEventDown(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.DOWN))
+    fun inputKeyEventLeft(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.LEFT))
+    fun inputKeyEventRight(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.RIGHT))
+    fun inputKeyEventCenter(project: Project) = executeOnDevice(project, InputKeyEventCommand(InputKeyEventCommand.CENTER))
+
     private fun executeOnDevice(project: Project, runnable: Command) {
         if (AdbUtil.isGradleSyncInProgress(project)) {
             NotificationHelper.error("Gradle sync is in progress")

@@ -134,6 +134,68 @@
                     description="Disable mobile data on device or emulator">
             </action>
 
+            <separator/>
+
+            <action id="com.developerphil.adbidea.action.RebootAction"
+                    class="com.developerphil.adbidea.action.RebootAction"
+                    text="ADB Reboot Device"
+                    description="Device reboot">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.OpenLauncher3Action"
+                    class="com.developerphil.adbidea.action.OpenLauncher3Action"
+                    text="ADB OpenLauncher3"
+                    description="Open launcher3">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.OpenSystemSettingsAction"
+                    class="com.developerphil.adbidea.action.OpenSystemSettingsAction"
+                    text="ADB OpenSystemSettings"
+                    description="Open systemSettings">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.OpenApplicationDevelopmentSettingsAction"
+                    class="com.developerphil.adbidea.action.OpenApplicationDevelopmentSettingsAction"
+                    text="ADB ApplicationDevelopmentSettings"
+                    description="Open applicationDevelopmentSettings">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.InputKeyEventBackAction"
+                    class="com.developerphil.adbidea.action.InputKeyEventBackAction"
+                    text="ADB Input KeyEvent Back"
+                    description="Input keyEvent back">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.InputKeyEventUpAction"
+                    class="com.developerphil.adbidea.action.InputKeyEventUpAction"
+                    text="ADB Input KeyEvent Up"
+                    description="Input keyEvent up">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.InputKeyEventDownAction"
+                    class="com.developerphil.adbidea.action.InputKeyEventDownAction"
+                    text="ADB Input KeyEvent Down"
+                    description="Input keyEvent down">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.InputKeyEventLeftAction"
+                    class="com.developerphil.adbidea.action.InputKeyEventLeftAction"
+                    text="ADB Input KeyEvent Left"
+                    description="Input keyEvent left">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.InputKeyEventRightAction"
+                    class="com.developerphil.adbidea.action.InputKeyEventRightAction"
+                    text="ADB Input KeyEvent Right"
+                    description="Input keyEvent right">
+            </action>
+
+            <action id="com.developerphil.adbidea.action.InputKeyEventCenterAction"
+                    class="com.developerphil.adbidea.action.InputKeyEventCenterAction"
+                    text="ADB Input KeyEvent Center"
+                    description="Input keyEvent center">
+            </action>
+
         </group>
     </actions>
 
